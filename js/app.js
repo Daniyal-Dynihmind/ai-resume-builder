@@ -53,9 +53,9 @@ function expRowHTML(item = {}, i) {
     </div>
     <textarea class="input" rows="3" data-k="bullets" placeholder="One achievement per line">${escapeHTML(item.bullets)}</textarea>
     <div class="flex justify-between items-center">
-      <button class="text-xs font-semibold text-violet-400 hover:text-violet-300" data-ai="exp" data-index="${i}">✨ Improve with AI (Part 2)</button>
-      <button class="text-xs font-semibold text-rose-400 hover:text-rose-300" data-remove="exp" data-index="${i}">Remove</button>
-    </div>
+     <button type="button" data-improve class="text-xs font-semibold text-violet-400 hover:text-violet-300">✨ Improve with AI</button>
+     <button type="button" class="text-xs font-semibold text-rose-400 hover:text-rose-300" data-remove="exp" data-index="${i}">Remove</button>
+   </div>
   </div>`;
 }
 
@@ -291,6 +291,118 @@ applyDesign();
 renderRows();
 renderPreview();
 lucide.createIcons();
+
+/* =========================================================
+   GEMINI AI INTEGRATION
+   ========================================================= */
+const KEY_STORAGE = 'ai_resume_gemini_key';
+const GEMINI_MODEL = 'gemini-1.5-flash';
+
+const keyInput = document.getElementById('f-apikey');
+keyInput.value = localStorage.getItem(KEY_STORAGE) || '';
+
+document.getElementById('saveKeyBtn').addEventListener('click', () => {
+  const key = keyInput.value.trim();
+  if (!key) { showToast('Please paste your API key first.', 'error'); return; }
+  localStorage.setItem(KEY_STORAGE, key);
+  showToast('API key saved in your browser.');
+});
+
+// Calls Gemini and returns plain text
+async function callGemini(prompt) {
+  const key = localStorage.getItem(KEY_STORAGE);
+  if (!key) throw new Error('Please save your Gemini API key first.');
+
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${key}`;
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      contents: [{ parts: [{ text: prompt }] }],
+      generationConfig: { temperature: 0.7, maxOutputTokens: 400 }
+    })
+  });
+
+  const json = await res.json();
+  if (!res.ok) {
+    throw new Error(json.error?.message || 'Gemini request failed.');
+  }
+  const text = json.candidates?.[0]?.content?.parts?.[0]?.text;
+  if (!text) throw new Error('AI returned an empty response. Try again.');
+  return text.trim();
+}
+
+// Button loading state helper
+function setLoading(btn, isLoading, originalHTML) {
+  if (isLoading) {
+    btn.dataset.original = btn.innerHTML;
+    btn.innerHTML = '<span class="spinner"></span> Generating...';
+    btn.classList.add('btn-loading');
+  } else {
+    btn.innerHTML = btn.dataset.original || originalHTML;
+    btn.classList.remove('btn-loading');
+    lucide.createIcons();
+  }
+}
+
+// 1) Generate professional summary
+document.getElementById('genSummaryBtn').addEventListener('click', async () => {
+  readTopFields();
+  if (!data.title && !data.skills) {
+    showToast('Add a Job Title or Skills first.', 'error');
+    return;
+  }
+  const btn = document.getElementById('genSummaryBtn');
+  setLoading(btn, true);
+  try {
+    const prompt = `Write a professional resume summary in English for the following person.
+Job title: ${data.title || 'Professional'}
+Key skills: ${data.skills || 'not specified'}
+Years and experience: ${data.experience.length ? data.experience.map(e => e.role).join(', ') : 'not specified'}
+
+Rules: 3 to 4 sentences, first person is not allowed, strong action-oriented tone, no headings, no bullet points, no quotation marks. Return only the summary text.`;
+    const summary = await callGemini(prompt);
+    document.getElementById('f-summary').value = summary;
+    onAnyChange();
+    showToast('Summary generated with AI.');
+  } catch (err) {
+    showToast(err.message, 'error');
+  } finally {
+    setLoading(btn, false);
+  }
+});
+
+// 2) Improve each experience's bullets (event delegation on the exp list)
+document.getElementById('expWrap').addEventListener('click', async e => {
+  const btn = e.target.closest('[data-improve]');
+  if (!btn) return;
+
+  const row = btn.closest('[data-type="exp"]');
+  const role = row.querySelector('[data-k="role"]').value;
+  const company = row.querySelector('[data-k="company"]').value;
+  const bullets = row.querySelector('[data-k="bullets"]').value.trim();
+
+  if (!bullets) { showToast('Write a few bullet points first.', 'error'); return; }
+
+  setLoading(btn, true);
+  try {
+    const prompt = `Rewrite the following work experience bullet points for a resume.
+Job title: ${role || 'N/A'}
+Company: ${company || 'N/A'}
+Original points:
+${bullets}
+
+Rules: Start each line with a strong action verb, add measurable impact where reasonable (do not invent exact fake numbers, use wording like "improved", "reduced", "increased"), keep each line under 22 words, return ONLY the bullet points, one per line, no dashes, no numbering, no extra text.`;
+    const improved = await callGemini(prompt);
+    row.querySelector('[data-k="bullets"]').value = improved;
+    onAnyChange();
+    showToast('Bullet points improved with AI.');
+  } catch (err) {
+    showToast(err.message, 'error');
+  } finally {
+    setLoading(btn, false);
+  }
+});
 
 // Demo data so the preview looks rich on first visit (only if empty)
 if (!data.name && !data.experience.length) {
