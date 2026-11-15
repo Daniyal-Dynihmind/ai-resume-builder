@@ -154,6 +154,25 @@
     </main>
   </div>
 
+  <!-- ============ CONFIRM MODAL ============ -->
+<div id="confirmModal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4 modal-backdrop">
+  <div class="glass modal-panel rounded-2xl w-full max-w-md p-6">
+    <div class="flex items-start gap-4">
+      <div class="p-3 rounded-xl bg-rose-500/15 shrink-0">
+        <i data-lucide="trash-2" class="w-5 h-5 text-rose-400"></i>
+      </div>
+      <div>
+        <h3 id="confirmTitle" class="text-lg font-bold text-white">Are you sure?</h3>
+        <p id="confirmMessage" class="text-sm text-slate-400 mt-1"></p>
+      </div>
+    </div>
+    <div class="flex justify-end gap-3 mt-6">
+      <button id="confirmCancel" class="px-5 py-2.5 rounded-xl text-sm font-semibold text-slate-300 hover:bg-slate-800 transition">Cancel</button>
+      <button id="confirmOk" class="px-5 py-2.5 rounded-xl text-sm font-semibold bg-rose-500 hover:bg-rose-400 text-white transition">Clear</button>
+    </div>
+  </div>
+</div>
+
   <div id="toastContainer" class="fixed bottom-6 right-6 z-[110] space-y-3"></div>
 
   <script src="js/app.js"></script>
