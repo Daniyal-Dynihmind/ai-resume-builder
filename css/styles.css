@@ -121,3 +121,11 @@ textarea.input { resize: vertical; }
   }
   .no-print { display: none !important; }
 }
+
+/* Modal */
+.modal-backdrop { background: rgba(2,6,23,0.7); backdrop-filter: blur(6px); }
+.modal-panel { animation: pop 0.25s ease; }
+@keyframes pop {
+  from { opacity: 0; transform: translateY(16px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
