@@ -196,13 +196,47 @@ document.addEventListener('click', e => {
 
 document.getElementById('printBtn').addEventListener('click', () => window.print());
 
+/* ============ CUSTOM CONFIRM ============ */
+const confirmModal = document.getElementById('confirmModal');
+let pendingAction = null;
+
+function openConfirm({ title, message, actionLabel, onConfirm }) {
+  document.getElementById('confirmTitle').textContent = title;
+  document.getElementById('confirmMessage').textContent = message;
+  document.getElementById('confirmOk').textContent = actionLabel || 'Confirm';
+  pendingAction = onConfirm;
+  confirmModal.classList.remove('hidden');
+  confirmModal.classList.add('flex');
+  lucide.createIcons();
+}
+
+function closeConfirm() {
+  confirmModal.classList.add('hidden');
+  confirmModal.classList.remove('flex');
+  pendingAction = null;
+}
+
+document.getElementById('confirmOk').addEventListener('click', () => {
+  if (pendingAction) pendingAction();
+  closeConfirm();
+});
+document.getElementById('confirmCancel').addEventListener('click', closeConfirm);
+confirmModal.addEventListener('click', e => { if (e.target === confirmModal) closeConfirm(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeConfirm(); });
+
 document.getElementById('clearBtn').addEventListener('click', () => {
-  if (!confirm('Clear the whole resume? This cannot be undone.')) return;
-  data = JSON.parse(JSON.stringify(emptyData));
-  fillTopFields();
-  renderRows();
-  onAnyChange();
-  showToast('Form cleared.', 'error');
+  openConfirm({
+    title: 'Clear resume?',
+    message: 'All your details, experience and education will be removed. This cannot be undone.',
+    actionLabel: 'Clear',
+    onConfirm: () => {
+      data = JSON.parse(JSON.stringify(emptyData));
+      fillTopFields();
+      renderRows();
+      onAnyChange();
+      showToast('Resume cleared.', 'error');
+    }
+  });
 });
 
 /* ============ INIT ============ */
