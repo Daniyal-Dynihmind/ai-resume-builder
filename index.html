@@ -103,7 +103,50 @@
           </div>
           <div id="eduWrap" class="space-y-4"></div>
         </div>
+        
+  <!-- Design: template, color, font -->
+<div class="glass rounded-2xl p-6 space-y-5 no-print">
+  <h2 class="font-semibold text-white flex items-center gap-2"><i data-lucide="palette" class="w-4 h-4 text-violet-400"></i> Design</h2>
 
+  <div>
+    <label class="label">Template</label>
+    <div class="grid grid-cols-3 gap-3">
+      <button type="button" data-template="modern" class="tpl-btn">
+        <span class="tpl-preview tpl-modern"></span> Modern
+      </button>
+      <button type="button" data-template="classic" class="tpl-btn">
+        <span class="tpl-preview tpl-classic"></span> Classic
+      </button>
+      <button type="button" data-template="minimal" class="tpl-btn">
+        <span class="tpl-preview tpl-minimal"></span> Minimal
+      </button>
+    </div>
+  </div>
+
+  <div>
+    <label class="label">Accent Color</label>
+    <div class="flex items-center gap-3 flex-wrap">
+      <input id="f-color" type="color" value="#7c3aed" class="w-12 h-10 rounded-lg bg-transparent border border-slate-700 cursor-pointer" />
+      <button type="button" data-color="#7c3aed" class="swatch" style="background:#7c3aed"></button>
+      <button type="button" data-color="#0891b2" class="swatch" style="background:#0891b2"></button>
+      <button type="button" data-color="#059669" class="swatch" style="background:#059669"></button>
+      <button type="button" data-color="#dc2626" class="swatch" style="background:#dc2626"></button>
+      <button type="button" data-color="#1e293b" class="swatch" style="background:#1e293b"></button>
+    </div>
+  </div>
+
+  <div>
+    <label class="label">Font</label>
+    <select id="f-font" class="input">
+      <option value="Inter">Inter (Modern)</option>
+      <option value="Georgia">Georgia (Classic)</option>
+      <option value="'Times New Roman'">Times New Roman (Formal)</option>
+      <option value="'Courier New'">Courier New (Technical)</option>
+      <option value="Verdana">Verdana (Clean)</option>
+    </select>
+  </div>
+</div>
+        
         <!-- Actions -->
         <div class="flex flex-wrap gap-3">
           <button id="clearBtn" class="px-5 py-2.5 rounded-xl text-sm font-semibold text-rose-300 bg-rose-500/10 hover:bg-rose-500/20 transition">Clear form</button>
