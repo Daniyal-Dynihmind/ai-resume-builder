@@ -1,3 +1,161 @@
 <!DOCTYPE html>
-<html><head><title>AI Resume Builder</title></head>
-<body><h1>AI Resume Builder - Coming Soon</h1></body></html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Resume Builder | Create Professional Resumes</title>
+  <meta name="description" content="Build a professional resume with AI-written summaries and export it as PDF." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+
+<body class="text-slate-200 bg-orbs">
+
+  <div class="min-h-screen">
+
+    <!-- ============ HEADER ============ -->
+    <header class="glass sticky top-0 z-20 flex items-center justify-between gap-4 px-4 md:px-8 py-3 no-print">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-violet-500 to-cyan-500 flex items-center justify-center shadow-lg shadow-violet-500/30">
+          <i data-lucide="sparkles" class="w-5 h-5 text-white"></i>
+        </div>
+        <h1 class="text-lg md:text-xl font-extrabold tracking-tight text-white">AI <span class="text-violet-400">Resume</span> Builder</h1>
+      </div>
+      <button id="printBtn" class="btn-primary px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-2">
+        <i data-lucide="printer" class="w-4 h-4"></i> <span class="hidden sm:inline">Print / Save PDF</span>
+      </button>
+    </header>
+
+    <main class="p-4 md:p-8 grid grid-cols-1 xl:grid-cols-2 gap-6">
+
+      <!-- ============ LEFT: FORM ============ -->
+      <section class="space-y-6 no-print">
+
+        <!-- Personal info -->
+        <div class="glass rounded-2xl p-6 space-y-4">
+          <h2 class="font-semibold text-white flex items-center gap-2"><i data-lucide="user" class="w-4 h-4 text-violet-400"></i> Personal Information</h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="label">Full Name *</label>
+              <input id="f-name" class="input" placeholder="e.g. Daniyal Dynihmind" />
+            </div>
+            <div>
+              <label class="label">Job Title *</label>
+              <input id="f-title" class="input" placeholder="e.g. Full-Stack Developer" />
+            </div>
+            <div>
+              <label class="label">Email</label>
+              <input id="f-email" type="email" class="input" placeholder="you@email.com" />
+            </div>
+            <div>
+              <label class="label">Phone</label>
+              <input id="f-phone" class="input" placeholder="+92 300 0000000" />
+            </div>
+            <div>
+              <label class="label">Location</label>
+              <input id="f-location" class="input" placeholder="e.g. Karachi, Pakistan" />
+            </div>
+            <div>
+              <label class="label">Website / Portfolio</label>
+              <input id="f-website" class="input" placeholder="yourname.vercel.app" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Summary -->
+        <div class="glass rounded-2xl p-6 space-y-4">
+          <div class="flex items-center justify-between">
+            <h2 class="font-semibold text-white flex items-center gap-2"><i data-lucide="file-text" class="w-4 h-4 text-violet-400"></i> Professional Summary</h2>
+          </div>
+          <textarea id="f-summary" rows="4" class="input" placeholder="Write a short summary, or let AI write it (Part 2)."></textarea>
+        </div>
+
+        <!-- Skills -->
+        <div class="glass rounded-2xl p-6 space-y-4">
+          <h2 class="font-semibold text-white flex items-center gap-2"><i data-lucide="code-2" class="w-4 h-4 text-violet-400"></i> Skills</h2>
+          <input id="f-skills" class="input" placeholder="Comma separated, e.g. HTML, CSS, JavaScript, React, Supabase" />
+          <p class="text-xs text-slate-500">Separate each skill with a comma.</p>
+        </div>
+
+        <!-- Experience -->
+        <div class="glass rounded-2xl p-6 space-y-4">
+          <div class="flex items-center justify-between">
+            <h2 class="font-semibold text-white flex items-center gap-2"><i data-lucide="briefcase" class="w-4 h-4 text-violet-400"></i> Experience</h2>
+            <button id="addExp" class="text-sm font-semibold text-violet-400 hover:text-violet-300 flex items-center gap-1">
+              <i data-lucide="plus" class="w-4 h-4"></i> Add
+            </button>
+          </div>
+          <div id="expWrap" class="space-y-4"></div>
+        </div>
+
+        <!-- Education -->
+        <div class="glass rounded-2xl p-6 space-y-4">
+          <div class="flex items-center justify-between">
+            <h2 class="font-semibold text-white flex items-center gap-2"><i data-lucide="graduation-cap" class="w-4 h-4 text-violet-400"></i> Education</h2>
+            <button id="addEdu" class="text-sm font-semibold text-violet-400 hover:text-violet-300 flex items-center gap-1">
+              <i data-lucide="plus" class="w-4 h-4"></i> Add
+            </button>
+          </div>
+          <div id="eduWrap" class="space-y-4"></div>
+        </div>
+
+        <!-- Actions -->
+        <div class="flex flex-wrap gap-3">
+          <button id="clearBtn" class="px-5 py-2.5 rounded-xl text-sm font-semibold text-rose-300 bg-rose-500/10 hover:bg-rose-500/20 transition">Clear form</button>
+          <span id="saveStatus" class="text-xs text-slate-500 self-center">Auto-saved</span>
+        </div>
+      </section>
+
+      <!-- ============ RIGHT: LIVE PREVIEW ============ -->
+      <section class="xl:sticky xl:top-24 xl:self-start">
+        <div class="flex justify-between items-center mb-3 no-print">
+          <p class="text-sm text-slate-400">Live preview (A4)</p>
+        </div>
+
+        <div id="resumePaper" class="bg-white text-slate-800 rounded-xl shadow-2xl p-8 md:p-10 min-h-[1000px] text-sm">
+          <!-- Header -->
+          <div class="border-b-4 border-violet-600 pb-4">
+            <h1 id="r-name" class="text-3xl font-extrabold text-slate-900">Your Name</h1>
+            <p id="r-title" class="text-lg text-violet-600 font-semibold mt-1">Job Title</p>
+            <p id="r-contact" class="text-xs text-slate-500 mt-2">email • phone • location • website</p>
+          </div>
+
+          <!-- Summary -->
+          <div class="mt-6" id="r-summary-block">
+            <h3 class="resume-h">Professional Summary</h3>
+            <p id="r-summary" class="text-slate-700 leading-relaxed">Your summary will appear here.</p>
+          </div>
+
+          <!-- Skills -->
+          <div class="mt-6" id="r-skills-block">
+            <h3 class="resume-h">Skills</h3>
+            <div id="r-skills" class="flex flex-wrap gap-2"></div>
+          </div>
+
+          <!-- Experience -->
+          <div class="mt-6" id="r-exp-block">
+            <h3 class="resume-h">Experience</h3>
+            <div id="r-exp" class="space-y-5"></div>
+          </div>
+
+          <!-- Education -->
+          <div class="mt-6" id="r-edu-block">
+            <h3 class="resume-h">Education</h3>
+            <div id="r-edu" class="space-y-4"></div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <div id="toastContainer" class="fixed bottom-6 right-6 z-[110] space-y-3"></div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
