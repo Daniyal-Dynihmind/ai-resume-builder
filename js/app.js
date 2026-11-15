@@ -296,7 +296,7 @@ lucide.createIcons();
    GEMINI AI INTEGRATION
    ========================================================= */
 const KEY_STORAGE = 'ai_resume_gemini_key';
-const GEMINI_MODEL = 'gemini-2.0-flash';
+const GEMINI_MODEL = 'gemini-3.8-flash';
 
 const keyInput = document.getElementById('f-apikey');
 keyInput.value = localStorage.getItem(KEY_STORAGE) || '';
