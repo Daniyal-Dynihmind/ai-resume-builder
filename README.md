@@ -2,7 +2,7 @@
 
 An AI-powered resume builder that helps job seekers and freelancers create professional resumes in minutes. Enter your details, let AI write a strong professional summary and experience bullet points, then preview and download your resume as a PDF.
 
-**Live Demo:** Coming soon (will be added after deployment)
+**Live Demo:** https://ai-resume-builder-theta-sand.vercel.app/
 
 ---
 
