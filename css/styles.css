@@ -1,0 +1,123 @@
+/* =========================================================
+   AI Resume Builder - Styles
+   ========================================================= */
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: #05070d;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Animated background glow */
+.bg-orbs::before,
+.bg-orbs::after {
+  content: "";
+  position: fixed;
+  width: 520px;
+  height: 520px;
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: 0.25;
+  z-index: -1;
+  pointer-events: none;
+  animation: float 14s ease-in-out infinite;
+}
+.bg-orbs::before { background: #8b5cf6; top: -150px; left: -120px; }
+.bg-orbs::after  { background: #06b6d4; bottom: -180px; right: -120px; animation-delay: -6s; }
+
+@keyframes float {
+  0%, 100% { transform: translate(0, 0); }
+  50%      { transform: translate(40px, 30px); }
+}
+
+/* Glass surface */
+.glass {
+  background: linear-gradient(145deg, rgba(15,23,42,0.75), rgba(15,23,42,0.35));
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(148,163,184,0.12);
+  box-shadow: 0 8px 32px -12px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.04);
+}
+
+/* Buttons */
+.btn-primary {
+  background: linear-gradient(135deg, #a78bfa, #7c3aed);
+  color: #ffffff;
+  box-shadow: 0 8px 24px -8px rgba(124,58,237,0.6);
+  transition: transform 0.15s ease, filter 0.2s;
+}
+.btn-primary:hover { transform: translateY(-1px); filter: brightness(1.08); }
+.btn-primary:active { transform: scale(0.98); }
+
+/* Inputs */
+.input {
+  width: 100%;
+  background: rgba(2,6,23,0.6);
+  border: 1px solid rgba(51,65,85,0.8);
+  color: #e2e8f0;
+  border-radius: 0.5rem;
+  padding: 0.6rem 0.75rem;
+  font-size: 0.875rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.input:focus {
+  outline: none;
+  border-color: #8b5cf6;
+  box-shadow: 0 0 0 3px rgba(139,92,246,0.18);
+}
+textarea.input { resize: vertical; }
+
+.label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #94a3b8;
+  margin-bottom: 0.25rem;
+}
+
+/* Resume paper headings */
+.resume-h {
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #6d28d9;
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 4px;
+  margin-bottom: 10px;
+}
+
+.skill-chip {
+  background: #ede9fe;
+  color: #5b21b6;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* Toast */
+.toast { animation: slideIn 0.3s ease; }
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(30px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+/* Print: only the resume paper */
+@media print {
+  body { background: #fff !important; }
+  body * { visibility: hidden !important; }
+  #resumePaper, #resumePaper * { visibility: visible !important; }
+  #resumePaper {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    min-height: auto;
+    box-shadow: none !important;
+    border-radius: 0;
+    padding: 20px !important;
+  }
+  .no-print { display: none !important; }
+}
