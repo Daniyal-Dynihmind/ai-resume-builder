@@ -7,8 +7,8 @@ const STORAGE_KEY = 'ai_resume_data';
 const emptyData = {
   name: '', title: '', email: '', phone: '', location: '', website: '',
   summary: '', skills: '',
-  experience: [],
-  education: []
+  experience: [], education: [],
+  template: 'modern', color: '#7c3aed', font: 'Inter'
 };
 
 let data = loadData();
@@ -109,6 +109,52 @@ function fillTopFields() {
     if (el) el.value = data[key] || '';
   });
 }
+// Apply design (template, color, font) to the preview
+function applyDesign() {
+  const paper = document.getElementById('resumePaper');
+  paper.classList.remove('tpl-classic-paper', 'tpl-minimal-paper');
+  if (data.template === 'classic') paper.classList.add('tpl-classic-paper');
+  if (data.template === 'minimal') paper.classList.add('tpl-minimal-paper');
+
+  paper.style.setProperty('--accent', data.color);
+  paper.style.setProperty('--resume-font', data.font);
+
+  document.querySelectorAll('[data-template]').forEach(b => {
+    b.classList.toggle('active', b.dataset.template === data.template);
+  });
+  document.getElementById('f-color').value = data.color;
+  document.getElementById('f-font').value = data.font;
+}
+
+// Template buttons
+document.querySelectorAll('[data-template]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    data.template = btn.dataset.template;
+    applyDesign();
+    saveData();
+  });
+});
+
+// Color swatches and picker
+document.querySelectorAll('[data-color]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    data.color = btn.dataset.color;
+    applyDesign();
+    saveData();
+  });
+});
+document.getElementById('f-color').addEventListener('input', e => {
+  data.color = e.target.value;
+  applyDesign();
+  saveData();
+});
+
+// Font select
+document.getElementById('f-font').addEventListener('change', e => {
+  data.font = e.target.value;
+  applyDesign();
+  saveData();
+});
 
 /* ============ LIVE PREVIEW ============ */
 function renderPreview() {
@@ -241,6 +287,7 @@ document.getElementById('clearBtn').addEventListener('click', () => {
 
 /* ============ INIT ============ */
 fillTopFields();
+applyDesign();
 renderRows();
 renderPreview();
 lucide.createIcons();
