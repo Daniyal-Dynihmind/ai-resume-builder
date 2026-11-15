@@ -162,3 +162,12 @@ textarea.input { resize: vertical; }
 #resumePaper.tpl-minimal-paper .resume-h { color: #334155; border-bottom: none; letter-spacing: 0.2em; }
 #resumePaper.tpl-minimal-paper .skill-chip { background: #f1f5f9; color: #334155; }
 #resumePaper.tpl-minimal-paper .accent-text { color: #334155 !important; }
+
+/* AI loading spinner */
+.spinner {
+  width: 14px; height: 14px; border-radius: 999px;
+  border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff;
+  animation: spin 0.8s linear infinite; display: inline-block;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.btn-loading { opacity: 0.7; pointer-events: none; }
