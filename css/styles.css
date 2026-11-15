@@ -129,3 +129,36 @@ textarea.input { resize: vertical; }
   from { opacity: 0; transform: translateY(16px) scale(0.97); }
   to   { opacity: 1; transform: translateY(0) scale(1); }
 }
+/* Template picker */
+.tpl-btn {
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  padding: 12px 8px; border-radius: 12px; font-size: 12px; font-weight: 600;
+  background: rgba(2,6,23,0.6); border: 1px solid rgba(51,65,85,0.8); color: #cbd5e1;
+  transition: all 0.2s;
+}
+.tpl-btn:hover { border-color: #8b5cf6; }
+.tpl-btn.active { border-color: #8b5cf6; box-shadow: 0 0 0 2px rgba(139,92,246,0.35); color: #fff; }
+
+.tpl-preview { width: 40px; height: 52px; border-radius: 4px; background: #fff; display: block; position: relative; }
+.tpl-modern::before { content: ""; position: absolute; left: 0; top: 0; right: 0; height: 14px; background: #8b5cf6; border-radius: 4px 4px 0 0; }
+.tpl-classic { border: 1px solid #94a3b8; }
+.tpl-classic::before { content: ""; position: absolute; left: 6px; right: 6px; top: 10px; height: 2px; background: #334155; }
+.tpl-minimal { border: 1px dashed #64748b; }
+
+.swatch { width: 28px; height: 28px; border-radius: 999px; transition: transform 0.15s; border: 2px solid rgba(255,255,255,0.15); }
+.swatch:hover { transform: scale(1.12); }
+
+/* Resume templates */
+#resumePaper { font-family: var(--resume-font, Inter), sans-serif; }
+#resumePaper .resume-h { color: var(--accent, #6d28d9); border-bottom-color: #e2e8f0; }
+#resumePaper .skill-chip { background: color-mix(in srgb, var(--accent, #7c3aed) 15%, white); color: var(--accent, #6d28d9); }
+
+/* Classic: centered header, serif look */
+#resumePaper.tpl-classic-paper .resume-header { text-align: center; border-bottom: 2px solid #1e293b !important; }
+#resumePaper.tpl-classic-paper .resume-h { color: #1e293b; border-bottom: 1px solid #1e293b; letter-spacing: 0.08em; }
+
+/* Minimal: no colors, plain headings */
+#resumePaper.tpl-minimal-paper .resume-header { border-bottom: 1px solid #cbd5e1 !important; }
+#resumePaper.tpl-minimal-paper .resume-h { color: #334155; border-bottom: none; letter-spacing: 0.2em; }
+#resumePaper.tpl-minimal-paper .skill-chip { background: #f1f5f9; color: #334155; }
+#resumePaper.tpl-minimal-paper .accent-text { color: #334155 !important; }
